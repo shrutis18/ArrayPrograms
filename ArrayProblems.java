@@ -218,10 +218,37 @@ public class ArrayProblems {
 
         /*STUDENTS: INSERT YOUR CODE HERE*/
 
-        return -1; //must change
+        int sum=Integer.MIN_VALUE, tempSum=0,k;
+        for (int i = 0; i <city.length ; i++) {
+            for (int j = 0; j < city[i].length; j++) {
+                int l = i;
+                while (l < city.length) {
+                    k=j;
+                    while (k < city[i].length) {
+                        tempSum = addMatrix(city, i, j, l, k);
+                        if (sum < tempSum) {
+                            sum = tempSum;
+                        }
+                        k++;
+                    }
+                    l++;
+                }
+            }
+        }
+        return sum; //must change
     }
 
-
+    public static int addMatrix(int[][] city, int i, int j, int maxX, int maxY){
+        int tempSum=0;
+        while( i <= maxX ) {
+            while( j <= maxY) {
+                tempSum += city[i][j];
+                j++;
+            }
+            i++;
+        }
+        return tempSum;
+    }
     /**
      * Determine if the chess board represented by board is a safe set up.
      * <p>pre: board != null, board.length > 0, board is a square matrix.
@@ -238,9 +265,64 @@ public class ArrayProblems {
                 && isSquare(board) && onlyContains(board, validChars)
                 : "Violation of precondition: queensAreSafe";
 
+
+        int attack = 0;
+        int queen;
+        int i = 0;
+        int j = 0;
+        for (i = 0; i < board.length; i++) {
+            queen = 0;
+            for (j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 'q') {
+                    queen = 1;
+                    break;
+                }
+            }
+            if (queen != 0) {
+                for (int k = j + 1; k < board.length; k++) {
+                    if (board[i][k] == 'q')
+                        attack = 1;
+                    if (attack==1)
+                    {
+                        return false;
+                    }
+                }
+//dia
+                for (int row = i + 1, col = j - 1; row < board.length && col >= 0; row++, col--) {
+                    if (board[row][col] == 'q')
+                        attack = 1;
+                    if (attack==1)
+                    {
+                        return false;
+                    }
+                }
+//ver
+                for (int row = i + 1; row < board.length; row++) {
+                    if (board[row][j] == 'q')
+                        attack = 1;
+                    if (attack==1)
+                    {
+                        return false;
+                    }
+                }
+//dia
+                for (int row = i + 1, col = j + 1; row < board.length && col < board.length; row++, col++) {
+                    if (board[row][col] == 'q')
+                        attack = 1;
+                    if (attack==1)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+// if (attack == 1) {
+// return false;
+// } else
+        return true;
 		/*STUDENTS: INSERT YOUR CODE HERE*/
 
-        return false; //must change
+
     }
 
     public static void main(String[] args) {
